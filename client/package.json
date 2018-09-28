@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --open"
+    "start": "node server.js"
   },
   "dependencies": {
     "history": "^4.6.3",
