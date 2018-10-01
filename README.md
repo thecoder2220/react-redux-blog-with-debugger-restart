@@ -52,6 +52,14 @@ authentication.reducer.js   - authentication()  action = {type: "USERS_LOGIN_REQ
 users.reducer.js            - users(state = {}, action)
 user.service.js             - login(username, password)  {username = "test", password = "test"}
                             -  handleResponse(response)  {  response = {ok: true}}
+                            text = "{"id":1,"username":"test","firstName":"aaaa","lastName":"aaaa","token":"fake-jwt-token"}"
+                            return data :{
+                                firstName: "aaaa"
+                                id: 1
+                                lastName: "aaaa"
+                                token: "fake-jwt-token"
+                                username: "test"
+                                }
 authentication.reducer.js   - authentication()  action = {type: "USERS_LOGIN_SUCCESS", user:firstName: "aaaa"
                                                                                             id: 1
                                                                                             lastName: "aaaa"
