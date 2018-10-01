@@ -27,6 +27,8 @@ function login(username, password) {
 
 =>  Etude des projets
 
+A) Projet java
+
 https://github.com/szerhusenBC/jwt-spring-security-demo
 
 avant apparition de la page d'accueil
@@ -42,5 +44,54 @@ après apparition de la page d'accueil et clic sur le bouton Login
                             UserRestController                      getAuthenticatedUser            , URL /user
     couche javascript   =>  success:  de  showUserInformation()     data = {username: "user", firstname: "user", lastname: "user", email: "enabled@user.com", authorities: Array(1), …}, textStatus = "success", 
 
+B) Projet javascript
 
-
+LoginPage.jsx               - handleSubmit
+                            - login(username, password) {username = "test", password = "test" }
+authentication.reducer.js   - authentication()  action = {type: "USERS_LOGIN_REQUEST", user: {username: "test"}
+users.reducer.js            - users(state = {}, action)
+user.service.js             - login(username, password)  {username = "test", password = "test"}
+                            -  handleResponse(response)  {  response = {ok: true}}
+authentication.reducer.js   - authentication()  action = {type: "USERS_LOGIN_SUCCESS", user:firstName: "aaaa"
+                                                                                            id: 1
+                                                                                            lastName: "aaaa"
+                                                                                            token: "fake-jwt-token"
+                                                                                            username: "test"        }
+users.reducer.js            - users(state = {}, action = {type: "USERS_LOGIN_SUCCESS", user:firstName: "aaaa"
+                                                                                            id: 1
+                                                                                            lastName: "aaaa"
+                                                                                            token: "fake-jwt-token"
+                                                                                            username: "test"        }                                                                                            
+authentication.reducer.js   - authentication()  action = { type: "ALERT_CLEAR"}                           
+users.reducer.js            - users(state = {}, action ={ type: "ALERT_CLEAR"}  
+user.service.js             - getAll() 
+authentication.reducer.js   - authentication()  action = {type:"USERS_GETALL_REQUEST"}
+users.reducer.js            - users(state = {}, state = {items: 0:
+                                                                firstName: "aaaa"
+                                                                id: 1
+                                                                lastName: "aaaa"
+                                                                password: "test"
+                                                                username: "test" , action = {type: "USERS_GETALL_REQUEST"}  }
+user.service.js             - getAll()      requestOptions:
+                                            headers:
+                                            Authorization: "Bearer fake-jwt-token"
+                                            method: "GET"                           , URL :/users
+                            -  handleResponse(response)  {  response = {ok: true}}
+authentication.reducer.js   - authentication()  action = {type: "USERS_GETALL_SUCCESS"
+                                                            users: Array(1)
+                                                            0:
+                                                            firstName: "aaaa"
+                                                            id: 1
+                                                            lastName: "aaaa"
+                                                            password: "test"
+                                                            username: "test"  }
+users.reducer.js            - users(            action = {type: "USERS_GETALL_SUCCESS"
+                                                          users: Array(1)
+                                                           0:
+                                                           firstName: "aaaa"
+                                                           id: 1
+                                                           lastName: "aaaa"
+                                                           password: "test"
+                                                           username: "test"  }                                                       
+                                                            
+                                                            
