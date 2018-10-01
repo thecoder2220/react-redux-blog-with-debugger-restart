@@ -20,6 +20,7 @@ public class PersonRestService {
 
     @RequestMapping(path = "/persons", method = RequestMethod.GET)
     public static List<Person> getPersons() {
+
         return persons;
     }
 

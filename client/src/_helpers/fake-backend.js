@@ -1,5 +1,5 @@
 // array in local storage for registered users
-let users = JSON.parse(localStorage.getItem('users')) || [];
+let usersInLocalStorage = JSON.parse(localStorage.getItem('users')) || [];
     
 export function configureFakeBackend() {
     let realFetch = window.fetch;
@@ -16,7 +16,7 @@ export function configureFakeBackend() {
                     /** localStorage.users
                      * 0: {firstName: "aaaa", lastName: "aaaa", username: "test", password: "test", id: 1}
                      * */
-                    let filteredUsers = users.filter(user => {
+                    let filteredUsers = usersInLocalStorage.filter(user => {
                         return user.username === params.username && user.password === params.password;
                     });
 
@@ -43,7 +43,7 @@ export function configureFakeBackend() {
                 if (url.endsWith('/users') && opts.method === 'GET') {
                     // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
                     if (opts.headers && opts.headers.Authorization === 'Bearer fake-jwt-token') {
-                        resolve({ ok: true, text: () => Promise.resolve(JSON.stringify(users))});
+                        resolve({ ok: true, text: () => Promise.resolve(JSON.stringify(usersInLocalStorage))});
                     } else {
                         // return 401 not authorised if token is null or invalid
                         reject('Unauthorised');
@@ -59,7 +59,7 @@ export function configureFakeBackend() {
                         // find user by id in users array
                         let urlParts = url.split('/');
                         let id = parseInt(urlParts[urlParts.length - 1]);
-                        let matchedUsers = users.filter(user => { return user.id === id; });
+                        let matchedUsers = usersInLocalStorage.filter(user => { return user.id === id; });
                         let user = matchedUsers.length ? matchedUsers[0] : null;
 
                         // respond 200 OK with user
@@ -78,16 +78,16 @@ export function configureFakeBackend() {
                     let newUser = JSON.parse(opts.body);
 
                     // validation
-                    let duplicateUser = users.filter(user => { return user.username === newUser.username; }).length;
+                    let duplicateUser = usersInLocalStorage.filter(user => { return user.username === newUser.username; }).length;
                     if (duplicateUser) {
                         reject('Username "' + newUser.username + '" is already taken');
                         return;
                     }
 
                     // save new user
-                    newUser.id = users.length ? Math.max(...users.map(user => user.id)) + 1 : 1;
-                    users.push(newUser);
-                    localStorage.setItem('users', JSON.stringify(users));
+                    newUser.id = usersInLocalStorage.length ? Math.max(...usersInLocalStorage.map(user => user.id)) + 1 : 1;
+                    usersInLocalStorage.push(newUser);
+                    localStorage.setItem('users', JSON.stringify(usersInLocalStorage));
 
                     // respond 200 OK
                     resolve({ ok: true, text: () => Promise.resolve() });
@@ -102,12 +102,12 @@ export function configureFakeBackend() {
                         // find user by id in users array
                         let urlParts = url.split('/');
                         let id = parseInt(urlParts[urlParts.length - 1]);
-                        for (let i = 0; i < users.length; i++) {
-                            let user = users[i];
+                        for (let i = 0; i < usersInLocalStorage.length; i++) {
+                            let user = usersInLocalStorage[i];
                             if (user.id === id) {
                                 // delete user
-                                users.splice(i, 1);
-                                localStorage.setItem('users', JSON.stringify(users));
+                                usersInLocalStorage.splice(i, 1);
+                                localStorage.setItem('users', JSON.stringify(usersInLocalStorage));
                                 break;
                             }
                         }

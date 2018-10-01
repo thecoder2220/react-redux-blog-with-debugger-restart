@@ -1,4 +1,5 @@
 import config from 'config';
+import axios from 'axios';
 import { authHeader } from '../_helpers';
 
 export const userService = {
@@ -11,14 +12,34 @@ export const userService = {
     delete: _delete
 };
 
+//Sign Up User
+export const SIGNUP_USER = 'SIGNUP_USER';
+
+/** à mon avis, http://localhost:3000 ne marche pas  */
+const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
+
 function login(username, password) {
+
+    debugger
+    const formValues = {'username':username, 'password':password}
+
+    /** ${ROOT_URL}/user/create devient ${ROOT_URL}/auth  */
+    const request = axios.post(`${ROOT_URL}/auth`, formValues);
+
+    return {
+        type: SIGNUP_USER,
+        payload: request
+    };
+
+/*
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+    /**  lien vers _helpers\fake-backend.js  */
+    /*  return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -29,6 +50,7 @@ function login(username, password) {
 
             return user;
         });
+        */
 }
 
 function logout() {
@@ -84,7 +106,10 @@ function _delete(id) {
     return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
 }
 
+
 function handleResponse(response) {
+
+    /** dans le fichier fake-backend.js, function text() => return Promise.resolve(JSON.stringify(responseJson));  */
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {

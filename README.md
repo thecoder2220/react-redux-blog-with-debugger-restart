@@ -48,6 +48,7 @@ B) Projet javascript
 
 LoginPage.jsx               - handleSubmit
                             - login(username, password) {username = "test", password = "test" }
+user.actions.js             - login(username, password)
 authentication.reducer.js   - authentication()  action = {type: "USERS_LOGIN_REQUEST", user: {username: "test"}
 users.reducer.js            - users(state = {}, action)
 user.service.js             - login(username, password)  {username = "test", password = "test"}
