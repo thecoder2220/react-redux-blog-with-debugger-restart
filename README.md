@@ -9,7 +9,18 @@ Actuellement seul le projet React marche via l'URL http://myccah.claurier.com/
 => **bug actuel**
 Access-Control-Allow-Origin
 
-Failed to load http://localhost:8000/api/auth: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://myccah.claurier.com' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+Failed to load http://localhost:8000/auth: 
+No 'Access-Control-Allow-Origin' header is present on the requested resource. 
+Origin 'http://myccah.claurier.com' is therefore not allowed access. 
+The response had HTTP status code 401. 
+If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+
+En somme, une ressource de mon serveur demande à ce que le client soit authentifié mais il ne devrait pas. 
+
+**=>  Try one of the following logins**
+    admin & admin
+    user & password
+    disabled & password
 
 =>  **Etude des projets**
 

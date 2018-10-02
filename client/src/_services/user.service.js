@@ -23,7 +23,7 @@ function login(username, password) {
     debugger
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify({ username, password })
     };
 
@@ -103,6 +103,7 @@ function handleResponse(response) {
         const data = text && JSON.parse(text);
         if (!response.ok) {
             if (response.status === 401) {
+                debugger
                 // auto logout if 401 response returned from api
                 logout();
                 location.reload(true);
