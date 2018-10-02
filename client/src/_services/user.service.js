@@ -21,17 +21,6 @@ const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000
 function login(username, password) {
 
     debugger
-    const formValues = {'username':username, 'password':password}
-
-    /** ${ROOT_URL}/user/create devient ${ROOT_URL}/auth  */
-    const request = axios.post(`${ROOT_URL}/auth`, formValues);
-
-    return {
-        type: SIGNUP_USER,
-        payload: request
-    };
-
-/*
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,7 +28,7 @@ function login(username, password) {
     };
 
     /**  lien vers _helpers\fake-backend.js  */
-    /*  return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+      return fetch(`${config.apiUrl}/auth`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -47,10 +36,8 @@ function login(username, password) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
             }
-
             return user;
         });
-        */
 }
 
 function logout() {
@@ -108,6 +95,8 @@ function _delete(id) {
 
 
 function handleResponse(response) {
+
+    debugger
 
     /** dans le fichier fake-backend.js, function text() => return Promise.resolve(JSON.stringify(responseJson));  */
     return response.text().then(text => {

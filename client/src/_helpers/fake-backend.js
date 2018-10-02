@@ -8,7 +8,7 @@ export function configureFakeBackend() {
             // wrap in timeout to simulate server api call
             setTimeout(() => {
 
-                // authenticate
+                /** correspond  à la classe java AuthenticationRestController, méthode    createAuthenticationToken       , URL /auth   */
                 if (url.endsWith('/users/authenticate') && opts.method === 'POST') {
                     // get parameters from post request
                     let params = JSON.parse(opts.body);

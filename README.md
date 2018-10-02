@@ -1,43 +1,55 @@
 =>  Fusion entre le projet java https://github.com/szerhusenBC/jwt-spring-security-demo et le projet React react-redux-registration-username-example-master
 
+https://github.com/szerhusenBC/jwt-spring-security-demo fonctionne avec le seveur Apache qui tourne
+
+http://myccah.claurier.com/ semble pointer vers http://myccah.claurier.com:10080/login
+
 Actuellement seul le projet React marche via l'URL http://myccah.claurier.com/
-http://localhost:8080 ne marche plus
 
-=>  objectif : répliquer le fonctionnement de react-redux-blog-with-debugger soit :
+=> **bug actuel**
+Access-Control-Allow-Origin
 
-dans users.js  =>  
-...
-export function signInUser(formValues) {
-  debugger;
-  const request = axios.post(`/auth/login`, formValues);
-...
+Failed to load http://localhost:8000/api/auth: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://myccah.claurier.com' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 
-doit être ajouté dans le fichier user.service.js
-à ce niveau : 
-....
-function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
-
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
-....
-
-=>  Etude des projets
+=>  **Etude des projets**
 
 A) Projet java
 
 https://github.com/szerhusenBC/jwt-spring-security-demo
 
 avant apparition de la page d'accueil
-    couche java =>  classe JwtAuthorizationTokenFilter, méthode protected void doFilterInternal
+    couche java =>  classe WebSecurityConfig,           méthode  configure(HttpSecurity httpSecurity) 
+                                            ,           méthode  configure(WebSecurity web)
+                                                            valeur de la variable authenticationPath="/auth" avec serveur Apache qui tourne
+lancement de la page d'accueil                                            
+                    classe JwtAuthorizationTokenFilter, méthode protected void doFilterInternal
+                        messages:   couldn't find bearer string, will ignore the header
+                                    checking authentication for user 'null'
+                                    processing authentication for 'http://localhost:8080/js/libs/jwt-decode.min.js'
+                                    processing authentication for 'http://localhost:8080/js/client.js'
+                                    couldn't find bearer string, will ignore the header
+                                    
+                    classe JwtAuthorizationTokenFilter, méthode protected void doFilterInternal
+                        messages:   checking authentication for user 'null' 
+                                    couldn't find bearer string, will ignore the header
+                                    checking authentication for user 'null'  
+                                    HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m907ms781µs722ns).
+                                    processing authentication for 'http://localhost:8080/favicon.ico'
+                    classe JwtAuthorizationTokenFilter, méthode protected void doFilterInternal
+                                    couldn't find bearer string, will ignore the header
+                                    checking authentication for user 'null'
+                                    HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m21s372ms888µs540ns).
+                          
 après apparition de la page d'accueil et clic sur le bouton Login
     couche javascript   =>  doLogin(loginData) {loginData = {username: "user", password: "password"}
     couche java =>  classe JwtAuthorizationTokenFilter, méthode     protected void doFilterInternal
+                        messsages :     processing authentication for 'http://localhost:8080/auth'        
+                                        HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=47s204ms333µs389ns).
+                                        couldn't find bearer string, will ignore the header
+                                        checking authentication for user 'null'
+                                        
                     classe AuthenticationRestController, méthode    createAuthenticationToken       , URL /auth
-                                                                    authenticate
+                                                                    authenticate            µµµµµ    
     couche javascript   =>  success: de doLogin(loginData)  data = {token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxN…RaBIM-iabSrSU6xV_MkiiWuVj4_KoCA03znqvEv7EwmEla6MA"}, textStatus = "success"
                             showUserInformation()                                                   , URL /user
     couche java =>  classe  JwtAuthorizationTokenFilter, méthode    protected void doFilterInternal
