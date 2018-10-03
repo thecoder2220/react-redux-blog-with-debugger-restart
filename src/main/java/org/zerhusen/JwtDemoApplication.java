@@ -19,6 +19,8 @@ public class JwtDemoApplication {
         c’est à dire de l’url myccah.claurier.com.
         Résultat de l'implémentation de WebMvcConfigurer :
         le serveur indique le paramètre Access-Control-Allow-Origin au client ReactJS qui tente d'accéder aux ressources du serveur
+
+        Configuration de contrôle de requêtes envoyées par le serveur (à confirmer)
      */
 
     @Bean
